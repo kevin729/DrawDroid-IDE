@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<languages>
+    <language name="java">
+        <dataTypes>
+            <datatype>String</datatype>
+            <datatype>int</datatype>
+            <datatype>Double</datatype>
+            <datatype>double</datatype>
+            <datatype>float</datatype>
+        </dataTypes>
+    </language>
+</languages>
