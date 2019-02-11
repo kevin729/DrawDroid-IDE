@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">MTE</string>
+    <string name="app_name">DrawDroid IDE</string>
     <string name="new_project">New Project</string>
     <string name="project_name">Project Name</string>
     <string name="create_project">Create Project</string>
     <string name="project_created">project has been created</string>
     <string name="delete">Delete</string>
+    <string name="drawingModeEnabled">Start Drawing on the Screen</string>
+    <string name="drawingModeDisabled">Drawing Mode Disabled</string>
 </resources>

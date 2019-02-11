@@ -5,53 +5,183 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Path;
+import android.widget.Toast;
+
+import nn.DRNetwork;
+import utils.Utils;
 
 /**
- * Created by kevin on 07/12/18.
+ * Created by kevin on 5/02/19
+ * Drawing panel to get code
  */
 
 public class CanvasView extends View {
 
-    public int width;
-    public int height;
-    private Bitmap bitmap;
-    private Canvas canvas;
     private Paint paint;
     private Path path;
-    private float x, y;
+    private DRNetwork brain;
 
-    public CanvasView(Context context, AttributeSet attribs) {
-        super(context, attribs);
+    public CanvasView(Context context) {
+        super(context);
+        brain = new DRNetwork(Utils.ActivationFunction.NONE, 128*128, 3);
+
+        //loads the weights of the neural network to recognise images
+        try {
+            brain.loadWeights(context.getAssets().open("weights.nn"));
+        } catch (Exception e) {e.printStackTrace();}
 
         path = new Path();
-
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeWidth(4f);
+        paint.setStrokeWidth(50f);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oW, int oH) {
-        super.onSizeChanged(w, h, oW, oH);
-        bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
+    public boolean onTouchEvent(MotionEvent e) {
+        float pointX = e.getX();
+        float pointY = e.getY();
+
+        //Sets the path to be drawn
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                path.moveTo(pointX, pointY);
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                path.lineTo(pointX, pointY);
+                break;
+            default:
+                return false;
+        }
+        postInvalidate();
+        return false;
     }
 
-
-    private void onStartTouch(float x, float y) {
-        path.moveTo(x, y);
-        this.x = x;
-        this.y = y;
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawPath(path, paint);
     }
 
-    private void moveTouch(float x, float y) {
-        float dx = Math.abs(x - this.x);
-        float dy = Math.abs(y - this.y);
+    public void clear() {
+        path.reset();
+        postInvalidate();
+    }
+
+    /**
+     * Formats canvas image and sends pixels through the neural network
+     */
+    public void feedForward() {
+        if (!path.isEmpty()) {
+            int[] pixels = new int[getWidth() * getHeight()];
+            //get pixel data
+
+            Bitmap image = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(image);
+            draw(canvas);
+
+            image.getPixels(pixels, 0, getWidth(), 0, 0, getWidth(), getHeight());
+
+            //scales and resize image for the network
+            Bitmap img = shrinkImage(pixels, getWidth(), getHeight());
+            pixels = resizeImage(img, 128);
+            brain.feedForward(normalise(pixels));
+
+            double result = 0;
+            int neuronIndex = 0;
+            for (int i = 0; i < brain.getOutputs().length; i++) {
+                if (brain.getOutputs()[i] > result) {
+                    result = brain.getOutputs()[i];
+                    neuronIndex = i;
+                }
+            }
+            Toast.makeText(getContext(), Integer.toString(neuronIndex), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Removes whitespace
+     * @param pixels
+     * @param screenWidth
+     * @param screenHeight
+     * @return shrunk Bitmap
+     */
+    private Bitmap shrinkImage(int[] pixels, int screenWidth, int screenHeight) {
+
+        int minX = screenWidth, minY = screenHeight;
+        int maxX = 0, maxY = 0;
+
+        for (int y = 0; y < screenHeight; y++) {
+            for (int x = 0; x < screenWidth; x++) {
+                if (pixels[x+y*screenWidth] != 0) {
+                    if (minX > x) {
+                        minX = x;
+                    }
+                    if (maxX < x) {
+                        maxX = x;
+                    }
+
+                    if (minY > y) {
+                        minY = y;
+                    }
+                    if (maxY < y) {
+                        maxY = y;
+                    }
+                }
+            }
+        }
+
+        int width = maxX - minX;
+        int height = maxY - minY;
+
+        int[] newPixels = new int[width * height];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                newPixels[x+y*width] = pixels[(x+minX)+(y+minY)*screenWidth];
+            }
+        }
+
+        Bitmap img = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        img.setPixels(newPixels, 0, width, 0, 0, width, height);
+
+        return img;
+    }
+
+    /**
+     * Sets the image to newSize x newSize
+     * @param img
+     * @param newSize
+     * @return new sized pixel array
+     */
+    private int[] resizeImage(Bitmap img, int newSize) {
+        Bitmap newImg = Bitmap.createScaledBitmap(img, newSize, newSize, true);
+
+        int[] pixels = new int[newSize*newSize];
+        newImg.getPixels(pixels, 0, newSize, 0, 0, newSize, newSize);
+
+        return pixels;
+    }
+
+    /**
+     * Changes pixel data to match neural network (black is 1, white is -1)
+     * @param pixels
+     * @return normalised pixel array
+     */
+    private double[] normalise(int[] pixels) {
+        double[] newPixels = new double[pixels.length];
+        for(int i = 0; i < pixels.length; i++) {
+            if(pixels[i] != 0) {
+                newPixels[i] = 1;
+            } else {
+                newPixels[i] = -1;
+            }
+        }
+
+        return newPixels;
     }
 }
