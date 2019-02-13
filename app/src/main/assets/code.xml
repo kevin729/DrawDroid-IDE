@@ -2,6 +2,19 @@
 
 <languages>
     <language name="java">
+        <codes>
+            <code>
+                if (condition) {
+                    statement;
+                }
+            </code>
+            <code>
+                for (i = 0; i &lt; max; i ++) {
+                    statement;
+                }
+            </code>
+        </codes>
+
         <dataTypes>
             <datatype>String</datatype>
             <datatype>int</datatype>

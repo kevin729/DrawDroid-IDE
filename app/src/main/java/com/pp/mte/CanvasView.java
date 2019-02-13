@@ -10,6 +10,15 @@ import android.view.View;
 import android.graphics.Path;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import nn.DRNetwork;
 import utils.Utils;
 
@@ -31,11 +40,12 @@ public class CanvasView extends View {
         //loads the weights of the neural network to recognise images
         try {
             brain.loadWeights(context.getAssets().open("weights.nn"));
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {}
+
 
         path = new Path();
         paint = new Paint();
-        paint.setAntiAlias(true);
+        paint.setAntiAlias(false);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
@@ -75,7 +85,7 @@ public class CanvasView extends View {
     /**
      * Formats canvas image and sends pixels through the neural network
      */
-    public void feedForward() {
+    public String feedForward() {
         if (!path.isEmpty()) {
             int[] pixels = new int[getWidth() * getHeight()];
             //get pixel data
@@ -99,15 +109,51 @@ public class CanvasView extends View {
                     neuronIndex = i;
                 }
             }
-            Toast.makeText(getContext(), Integer.toString(neuronIndex), Toast.LENGTH_SHORT).show();
+
+            return getCode(neuronIndex);
         }
+
+        return "";
+    }
+
+    /**
+     * Gets code to output based on fired neuron
+     * @param index neuron fired
+     * @return code to output
+     */
+    private String getCode(int index) {
+        int i = 0;
+        try {
+            XmlPullParserFactory parserFactory;
+            parserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = parserFactory.newPullParser();
+            InputStream is = getContext().getAssets().open("code.xml");
+            parser.setInput(is, null);
+
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        if ("code".equals(parser.getName())) {
+                            if (i == index) {
+                                return parser.nextText();
+                            } else {
+                                i++;
+                            }
+                        }
+                        break;
+                }
+                eventType = parser.next();
+            }
+        } catch (Exception e) {}
+        return "";
     }
 
     /**
      * Removes whitespace
-     * @param pixels
-     * @param screenWidth
-     * @param screenHeight
+     * @param pixels of original image
+     * @param screenWidth of original image width
+     * @param screenHeight of original image height
      * @return shrunk Bitmap
      */
     private Bitmap shrinkImage(int[] pixels, int screenWidth, int screenHeight) {
@@ -145,9 +191,12 @@ public class CanvasView extends View {
                 newPixels[x+y*width] = pixels[(x+minX)+(y+minY)*screenWidth];
             }
         }
+        Bitmap img = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        if (width > 0 && height > 0) {
+            img = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            img.setPixels(newPixels, 0, width, 0, 0, width, height);
 
-        Bitmap img = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        img.setPixels(newPixels, 0, width, 0, 0, width, height);
+        }
 
         return img;
     }

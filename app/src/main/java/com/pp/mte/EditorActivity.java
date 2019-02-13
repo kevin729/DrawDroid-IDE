@@ -3,8 +3,10 @@ package com.pp.mte;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,14 +38,11 @@ public class EditorActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (drawingMode) {
-                    exitDrawingMode();
-                } else {
-                    startActivity(new Intent(EditorActivity.this, ProjectsActivity.class));
-                }
+        toolbar.setNavigationOnClickListener((View view) -> {
+            if (drawingMode) {
+                exitDrawingMode();
+            } else {
+                startActivity(new Intent(EditorActivity.this, ProjectsActivity.class));
             }
         });
 
@@ -107,7 +106,50 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void feedForward() {
-        canvasView.feedForward();
+        String[] text = canvasView.feedForward().split("\n");
+        for (int i = 1; i < text.length; i++) {
+            editorText.append(text[i].trim() + "\n");
+        }
+
+        sortCode();
         canvasView.clear();
+    }
+
+    /**
+     * Structures the code
+     */
+    private void sortCode() {
+        int cursorPosition = 0;
+        int indent = 0;
+        String[] codeLines = editorText.getText().toString().split("\n");
+        for (int i = 0; i < codeLines.length; i++) {
+            //if closing method, decrease the indent
+            if (codeLines[i].contains("}")) {
+                indent--;
+            }
+
+            //add current indent (here because method closing moves left whereas starting indent will STAY at previous indent
+            String indentation = "";
+            for (int ind = 0; ind < indent*4; ind++) {
+                indentation += " ";
+            }
+
+            //if opening method, increase the indent for next line
+            if (codeLines[i].contains("{")) {
+                indent++;
+            }
+
+            //sets length to move code
+            String selectedText = editorText.getText().toString().substring(cursorPosition, cursorPosition + indentation.length());
+            int indentationLength = 0;
+            if (!selectedText.equals(indentation)) {
+                indentationLength = indentation.length();
+                editorText.getText().insert(cursorPosition, indentation);
+            }
+
+            //change positions
+            cursorPosition += codeLines[i].length() + indentationLength + 1;
+            editorText.setSelection(cursorPosition);
+        }
     }
 }
