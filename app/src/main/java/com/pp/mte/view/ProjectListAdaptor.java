@@ -1,4 +1,4 @@
-package com.pp.mte;
+package com.pp.mte.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.pp.mte.R;
 
 import java.util.ArrayList;
 import java.util.List;

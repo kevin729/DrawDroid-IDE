@@ -1,4 +1,4 @@
-package com.pp.mte;
+package com.pp.mte.view;
 
 import android.content.Intent;
 
@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.pp.mte.R;
 
 import java.io.File;
 import java.util.ArrayList;

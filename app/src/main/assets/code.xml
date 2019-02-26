@@ -4,14 +4,40 @@
     <language name="java">
         <codes>
             <code>
+                public class className {
+
+                }
+            </code>
+            <code>
+                public void method() {
+
+                }
+            </code>
+            <code>
+                public static void main(String[] args) {
+
+                }
+            </code>
+            <code>
+                public enum e {
+
+                }
+            </code>
+            <code>
                 if (condition) {
                     statement;
                 }
             </code>
             <code>
-                for (i = 0; i &lt; max; i ++) {
+                for (i = 0; i &lt; max; i++) {
                     statement;
                 }
+            </code>
+            <code>
+                var z = z == x ? c : v;
+            </code>
+            <code>
+                System.out.println(out);
             </code>
         </codes>
 

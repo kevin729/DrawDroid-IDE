@@ -1,4 +1,4 @@
-package com.pp.mte;
+package com.pp.mte.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,16 +8,8 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Path;
-import android.widget.Toast;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import com.pp.mte.models.XMLParser;
 
 import nn.DRNetwork;
 import utils.Utils;
@@ -28,20 +20,13 @@ import utils.Utils;
  */
 
 public class CanvasView extends View {
-
+    private EditorActivity editor;
     private Paint paint;
     private Path path;
-    private DRNetwork brain;
 
-    public CanvasView(Context context) {
+    public CanvasView(Context context, EditorActivity editor) {
         super(context);
-        brain = new DRNetwork(Utils.ActivationFunction.NONE, 128*128, 3);
-
-        //loads the weights of the neural network to recognise images
-        try {
-            brain.loadWeights(context.getAssets().open("weights.nn"));
-        } catch (Exception e) {}
-
+        this.editor = editor;
 
         path = new Path();
         paint = new Paint();
@@ -65,6 +50,8 @@ public class CanvasView extends View {
             case MotionEvent.ACTION_MOVE:
                 path.lineTo(pointX, pointY);
                 break;
+            case MotionEvent.ACTION_UP:
+                feedForward();
             default:
                 return false;
         }
@@ -85,11 +72,11 @@ public class CanvasView extends View {
     /**
      * Formats canvas image and sends pixels through the neural network
      */
-    public String feedForward() {
+    public void feedForward() {
         if (!path.isEmpty()) {
             int[] pixels = new int[getWidth() * getHeight()];
-            //get pixel data
 
+            //get pixel data
             Bitmap image = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(image);
             draw(canvas);
@@ -98,55 +85,14 @@ public class CanvasView extends View {
 
             //scales and resize image for the network
             Bitmap img = shrinkImage(pixels, getWidth(), getHeight());
+
+            if (img.getWidth() <= 50 || img.getHeight() <= 50) {
+                return;
+            }
+
             pixels = resizeImage(img, 128);
-            brain.feedForward(normalise(pixels));
-
-            double result = 0;
-            int neuronIndex = 0;
-            for (int i = 0; i < brain.getOutputs().length; i++) {
-                if (brain.getOutputs()[i] > result) {
-                    result = brain.getOutputs()[i];
-                    neuronIndex = i;
-                }
-            }
-
-            return getCode(neuronIndex);
+            editor.presenter.onGesture(normalise(pixels));
         }
-
-        return "";
-    }
-
-    /**
-     * Gets code to output based on fired neuron
-     * @param index neuron fired
-     * @return code to output
-     */
-    private String getCode(int index) {
-        int i = 0;
-        try {
-            XmlPullParserFactory parserFactory;
-            parserFactory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = parserFactory.newPullParser();
-            InputStream is = getContext().getAssets().open("code.xml");
-            parser.setInput(is, null);
-
-            int eventType = parser.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        if ("code".equals(parser.getName())) {
-                            if (i == index) {
-                                return parser.nextText();
-                            } else {
-                                i++;
-                            }
-                        }
-                        break;
-                }
-                eventType = parser.next();
-            }
-        } catch (Exception e) {}
-        return "";
     }
 
     /**
@@ -195,7 +141,6 @@ public class CanvasView extends View {
         if (width > 0 && height > 0) {
             img = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             img.setPixels(newPixels, 0, width, 0, 0, width, height);
-
         }
 
         return img;

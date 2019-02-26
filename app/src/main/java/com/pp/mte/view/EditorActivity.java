@@ -1,14 +1,15 @@
-package com.pp.mte;
+package com.pp.mte.view;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -16,11 +17,17 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.pp.mte.EditorI;
+import com.pp.mte.R;
+import com.pp.mte.presenter.EditorPresenter;
+
 /**
  * Created by kevin on 11/02/18.
  */
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements EditorI.View{
+
+    public EditorPresenter presenter;
 
     private boolean drawingMode = false;
     private MenuItem drawBtn;
@@ -32,6 +39,8 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        presenter = new EditorPresenter(getBaseContext(), this);
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         toolbar.setNavigationIcon(R.drawable.backbtn);
@@ -52,7 +61,7 @@ public class EditorActivity extends AppCompatActivity {
         editorText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 
         //sets up drawing view
-        canvasView = new CanvasView(this);
+        canvasView = new CanvasView(this, this);
         layout = findViewById(R.id.editorLayout);
         canvasView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) canvasView.getLayoutParams();
@@ -71,7 +80,7 @@ public class EditorActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.drawBtn:
                 if (drawingMode) {
-                    feedForward();
+                    exitDrawingMode();
                 } else {
                     enterDrawingMode();
                 }
@@ -85,7 +94,7 @@ public class EditorActivity extends AppCompatActivity {
      */
     private void enterDrawingMode() {
         if (!drawingMode) {
-            drawBtn.setIcon(R.drawable.gobtn);
+            drawBtn.setIcon(R.drawable.backbtn);
             layout.addView(canvasView);
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.drawingModeEnabled), Toast.LENGTH_LONG).show();
             drawingMode = true;
@@ -105,13 +114,19 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    private void feedForward() {
-        String[] text = canvasView.feedForward().split("\n");
-        for (int i = 1; i < text.length; i++) {
-            editorText.append(text[i].trim() + "\n");
-        }
+    @Override
+    public void setCode(String extractedText) {
 
-        sortCode();
+        if (!extractedText.equals("")) {
+            int cursorPosition = 0;
+            String[] text = extractedText.split("\n");
+            for (int i = 1; i < text.length-1; i++) {
+                editorText.getText().insert(editorText.getSelectionStart(), text[i].trim() + '\n');
+                cursorPosition = editorText.getSelectionStart();
+            }
+
+            sortCode();
+        }
         canvasView.clear();
     }
 
@@ -140,7 +155,7 @@ public class EditorActivity extends AppCompatActivity {
             }
 
             //sets length to move code
-            String selectedText = editorText.getText().toString().substring(cursorPosition, cursorPosition + indentation.length());
+            String selectedText = editorText.getText().toString().substring(cursorPosition, Math.min(cursorPosition + indentation.length(), cursorPosition + codeLines[i].length()));
             int indentationLength = 0;
             if (!selectedText.equals(indentation)) {
                 indentationLength = indentation.length();
