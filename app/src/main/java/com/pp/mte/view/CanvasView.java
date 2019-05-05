@@ -9,11 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Path;
 
-import com.pp.mte.models.XMLParser;
-
-import nn.DRNetwork;
-import utils.Utils;
-
 /**
  * Created by kevin on 5/02/19
  * Drawing panel to get code
@@ -87,11 +82,12 @@ public class CanvasView extends View {
             Bitmap img = shrinkImage(pixels, getWidth(), getHeight());
 
             if (img.getWidth() <= 50 || img.getHeight() <= 50) {
+                clear();
                 return;
             }
 
             pixels = resizeImage(img, 128);
-            editor.presenter.onGesture(normalise(pixels));
+            editor.presenter.handleGesture(normalise(pixels));
         }
     }
 

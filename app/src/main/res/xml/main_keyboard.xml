@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyWidth="100%p"
+    android:keyHeight="50dp"
+    >
+
+    <Row>
+        <Key android:codes="59" android:keyLabel=";" android:keyWidth="25%p" android:keyHeight="50dp"/>
+        <Key android:codes="40" android:keyLabel="(" android:keyWidth="25%p" android:keyHeight="50dp"/>
+        <Key android:codes="41" android:keyLabel=")" android:keyWidth="25%p" android:keyHeight="50dp"/>
+        <Key android:codes="-5" android:keyIcon="@drawable/backspace" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+
+    <Row>
+        <Key android:codes="65" android:keyIcon="@drawable/tab" android:keyWidth="25%p" android:keyHeight="100dp"/>
+        <Key android:codes="60000" android:keyLabel="Methods" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70000" android:keyLabel="Variables" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="80000" android:keyLabel="Letters" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+    <Row>
+        <Key android:codes="5" android:keyLabel="" android:keyWidth="0dp" android:keyHeight="50dp" android:horizontalGap="25%p"/>
+        <Key android:codes="90000" android:keyLabel="Operators" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="100000" android:keyLabel="Data Types" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="10" android:keyIcon="@drawable/enter" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+    <Row>
+        <Key android:codes="55002" android:keyIcon="@drawable/left" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="55003" android:keyIcon="@drawable/right" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="32" android:keyIcon="@drawable/space" android:keyWidth="50%p" android:keyHeight="50dp" />
+    </Row>
+</Keyboard>

@@ -4,4 +4,8 @@
     <item
         android:title="@string/delete"
         android:id="@+id/delete_project" />
+
+    <item
+        android:title="Help"
+        android:id="@+id/help" />
 </menu>

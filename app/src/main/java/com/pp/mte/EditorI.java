@@ -14,6 +14,6 @@ public interface EditorI {
     }
 
     interface Presenter {
-        void onGesture (double[] pixels);
+        void handleGesture (double[] pixels);
     }
 }

@@ -7,4 +7,14 @@
     <string name="delete">Delete</string>
     <string name="drawingModeEnabled">Start Drawing on the Screen</string>
     <string name="drawingModeDisabled">Drawing Mode Disabled</string>
+
+    <string name="classHelp">public class Classname \n{\n\n}</string>
+    <string name="methodHelp">public void method() \n{\n\n}</string>
+    <string name="mainHelp">public static void main(String[] args)\n{\n\n}</string>
+    <string name="enumHelp">public enum e \n{\n\n}</string>
+    <string name="ifHelp">if (condition) \n{\n\n}</string>
+    <string name="forHelp">for (i = 0; i &lt; max; i++) \n{\n\n}</string>
+    <string name="whileHelp">while (condition) \n{\n\n}</string>
+    <string name="conditionalHelp">var z = z == x ? c : v;</string>
+    <string name="printHelp">System.out.println(out);</string>
 </resources>

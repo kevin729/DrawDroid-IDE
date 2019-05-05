@@ -25,19 +25,24 @@
             </code>
             <code>
                 if (condition) {
-                    statement;
+
                 }
             </code>
             <code>
                 for (i = 0; i &lt; max; i++) {
-                    statement;
+
+                }
+            </code>
+            <code>
+                while (condition) {
+
                 }
             </code>
             <code>
                 var z = z == x ? c : v;
             </code>
             <code>
-                System.out.println(out);
+                System.out.println("out");
             </code>
         </codes>
 

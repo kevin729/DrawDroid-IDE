@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.pp.mte.view.HelpActivity">
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/cGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/c"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/classText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/cGif"
+            android:text="@string/classHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/methodGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cGif"
+            android:src="@drawable/method"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/methodText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cGif"
+            android:layout_toEndOf="@+id/cGif"
+            android:layout_toRightOf="@+id/cGif"
+            android:text="@string/methodHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/mainGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/methodGif"
+            android:src="@drawable/main"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/methodGif"
+            android:layout_toEndOf="@+id/mainGif"
+            android:layout_toRightOf="@+id/mainGif"
+            android:text="@string/mainHelp"
+            android:textSize="12sp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/eGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mainGif"
+            android:src="@drawable/e"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/enumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mainGif"
+            android:layout_toEndOf="@+id/eGif"
+            android:layout_toRightOf="@+id/eGif"
+            android:text="@string/enumHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/ifGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eGif"
+            android:src="@drawable/i"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/ifText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eGif"
+            android:layout_toEndOf="@+id/ifGif"
+            android:layout_toRightOf="@+id/ifGif"
+            android:text="@string/ifHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/forGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ifGif"
+            android:src="@drawable/four"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/forText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ifGif"
+            android:layout_toEndOf="@+id/forGif"
+            android:layout_toRightOf="@+id/forGif"
+            android:text="@string/forHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/whileGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forGif"
+            android:src="@drawable/w"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/whileText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forGif"
+            android:layout_toEndOf="@+id/whileGif"
+            android:layout_toRightOf="@+id/whileGif"
+            android:text="@string/whileHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/conditionalGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/whileGif"
+            android:src="@drawable/question"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/conditionalText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/whileGif"
+            android:layout_toEndOf="@+id/conditionalGif"
+            android:layout_toRightOf="@+id/conditionalGif"
+            android:text="@string/conditionalHelp" />
+
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/printGif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/conditionalGif"
+            android:src="@drawable/print"
+            android:background="@color/white"
+            ></pl.droidsonroids.gif.GifImageButton>
+
+        <TextView
+            android:id="@+id/printText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/conditionalGif"
+            android:layout_toEndOf="@+id/printGif"
+            android:layout_toRightOf="@+id/printGif"
+            android:text="@string/printHelp" />
+
+</RelativeLayout>
+</ScrollView>

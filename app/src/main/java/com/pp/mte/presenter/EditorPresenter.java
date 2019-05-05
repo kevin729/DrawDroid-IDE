@@ -4,10 +4,9 @@ import android.content.Context;
 
 import com.pp.mte.EditorI;
 import com.pp.mte.EditorI.*;
-import com.pp.mte.models.XMLParser;
+import com.pp.mte.models.GestureModel;
 
 import nn.DRNetwork;
-import nn.NeuralNetwork;
 import utils.Utils;
 
 
@@ -18,15 +17,15 @@ import utils.Utils;
 public class EditorPresenter implements EditorI.Presenter{
 
     private View editorView;
-    private Model XMLParser;
+    private Model gestureModel;
     private DRNetwork brain;
 
     public EditorPresenter(Context context, View view) {
         editorView = view;
-        XMLParser = new XMLParser(context);
+        gestureModel = new GestureModel(context);
 
         //setup NeuralNetwork
-        brain = new DRNetwork(Utils.ActivationFunction.NONE, 128*128, 8);
+        brain = new DRNetwork(Utils.ActivationFunction.NONE, 128*128, 9);
 
         //loads the weights of the neural network to recognise images
         try {
@@ -35,19 +34,19 @@ public class EditorPresenter implements EditorI.Presenter{
     }
 
     @Override
-    public void onGesture(double[] pixels) {
+    public void handleGesture(double[] pixels) {
         brain.feedForward(pixels);
 
         double result = 0;
         int neuronIndex = 0;
         for (int i = 0; i < brain.getOutputs().length; i++) {
-            if (brain.getOutputs()[i] > result) {
+            if ((brain.getOutputs()[i] > result && i != 0) || (i==0)) {
                 result = brain.getOutputs()[i];
                 neuronIndex = i;
             }
         }
 
-        String code = XMLParser.getCode(neuronIndex);
+        String code = gestureModel.getCode(neuronIndex);
         editorView.setCode(code);
     }
 }

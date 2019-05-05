@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyWidth="100%p"
+    android:keyHeight="50dp" >
+
+
+    <Row>
+        <Key android:codes="70001" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70002" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70003" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70004" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+    <Row>
+        <Key android:codes="70005" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70006" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70007" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70008" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+    <Row>
+        <Key android:codes="70009" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="700010" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="700011" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="700013" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+    </Row>
+
+    <Row>
+        <Key android:codes="50000" android:keyIcon="@drawable/left" android:keyWidth="20%p" android:keyHeight="50dp" />
+        <Key android:codes="32" android:keyIcon="@drawable/space" android:keyWidth="20%p" android:keyHeight="50dp" />
+        <Key android:codes="61" android:keyLabel="=" android:keyWidth="20%p" android:keyHeight="50dp" />
+        <Key android:codes="59" android:keyLabel=";" android:keyWidth="20%p" android:keyHeight="50dp"/>
+        <Key android:codes="-5" android:keyIcon="@drawable/backspace" android:keyWidth="20%p" android:keyHeight="50dp" />
+    </Row>
+
+</Keyboard>

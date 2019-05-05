@@ -121,7 +121,10 @@ public class ProjectsActivity extends AppCompatActivity {
                         projectsAdaptor.delete(i);
                     }
                 }
+                return true;
 
+            case R.id.help:
+                startActivity(new Intent(ProjectsActivity.this, HelpActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

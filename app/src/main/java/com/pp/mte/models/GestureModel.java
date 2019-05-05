@@ -13,11 +13,12 @@ import java.io.InputStream;
  * Created by kevin on 21/02/19.
  */
 
-public class XMLParser implements EditorI.Model {
+public class GestureModel implements EditorI.Model {
     Context context;
-    public XMLParser(Context context) {
+    public GestureModel(Context context) {
         this.context = context;
     }
+
     /**
      * Gets code to output based on fired neuron
      * @param index neuron fired

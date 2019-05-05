@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:id="@+id/editorLayout"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -13,8 +15,22 @@
         android:id="@+id/editorText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="12sp"
-        android:gravity="top"
+        android:layout_above="@id/keyboardview"
         android:layout_below="@+id/app_bar"
-        android:textColor="@color/black"/>
+        android:background="@null"
+        android:gravity="top"
+        android:textColor="@color/black"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:textSize="12sp" />
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/keyboardview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        android:scrollbarAlwaysDrawVerticalTrack="true"/>
 </RelativeLayout>
