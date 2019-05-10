@@ -309,7 +309,9 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
             }
         }
 
-        editorText.setSelection(endPosition + positionIndentation);
+        if (endPosition + positionIndentation <= editorText.length()) {
+            editorText.setSelection(endPosition + positionIndentation);
+        }
 
         newCodeIndex = start;
 
