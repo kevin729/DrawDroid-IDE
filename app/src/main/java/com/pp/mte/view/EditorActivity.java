@@ -60,6 +60,7 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
     private int variableAmount = 0;
 
     private int newCodeIndex = 0;
+    private int previousCodeIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,9 +333,13 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
 
     public class KeyboardService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
+        private int selectionStart = 0;
+        private int selectionEnd = 0;
+
         public final static int delete = -5; //delete
         public final static int left = 55002; //cursor left
         public final static int right = 55003; //cursor right
+        public final static int tab = 55004;
 
         public final static int mainBtn = 50000;
         public final static int methodBtn = 60000;
@@ -361,42 +366,108 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
         public void onKey(int primaryCode, int[] keyCodes) {
             int start = editorText.getSelectionStart();
 
-            if (primaryCode==delete) {
-                if (editorText.getText() != null && start > 0) {
-                    editorText.getText().delete(start - 1, start);
-                }
+            if (primaryCode==tab) {
+                do {
+                    selectionStart = newCodeIndex;
+                    String text = editorText.getText().toString().substring(newCodeIndex, editorText.getText().length());
+                    String word = text.split(" ")[0].replaceAll("\\s.", "");
+
+                    newCodeIndex += word.length() + 1;
+                    selectionEnd = newCodeIndex - 1;
+                    if (word.contains("(")) {
+                        selectionStart++;
+                    }
+
+                    if (word.contains(")")) {
+                        selectionEnd--;
+                    }
+
+                    if (word.contains(";")) {
+                        selectionEnd--;
+                    }
+
+                    if (word.contains(System.getProperty("line.separator"))) {
+                        selectionEnd--;
+                    }
+
+                    editorText.setSelection(selectionStart, selectionEnd);
+
+                    if (editorText.getText().length() - selectionEnd < 2) {
+                        newCodeIndex = 0;
+                    }
+
+                    if (word.matches("\n")) {
+                        System.out.println("next Line");
+                        selectionEnd = selectionStart;
+                        editorText.setSelection(selectionStart, selectionEnd);
+                        break;
+                    }
+
+
+
+                } while (selectionStart == selectionEnd);
+
+                return;
             } else if (primaryCode==left) {
                 if (start > 0) {
                     editorText.setSelection(start - 1);
                 }
+
+                return;
             } else if (primaryCode==right) {
                 if (start < editorText.length()) {
                     editorText.setSelection(start + 1);
                 }
+
+                return;
             } else if (primaryCode==mainBtn) {
                 keyboardView.setKeyboard(mainKeyboard);
+
+                return;
             } else if (primaryCode==methodBtn) {
                 keyboardView.setKeyboard(methodKeyboard);
                 sortCode();
                 editorText.setSelection(start);
-            } else if (primaryCode > methodBtn && primaryCode < variableBtn) {
-                editorText.getText().insert(start, methodKeyboard.getKeys().get(primaryCode - methodBtn - 1).label);
+
+                return;
             } else if (primaryCode==variableBtn) {
                 keyboardView.setKeyboard(variableKeyboard);
                 sortCode();
                 editorText.setSelection(start);
-            } else if (primaryCode > variableBtn && primaryCode < keyBtn) {
-                editorText.getText().insert(start, variableKeyboard.getKeys().get(primaryCode - variableBtn - 1).label);
+
+                return;
             } else if (primaryCode==keyBtn) {
                 keyboardView.setKeyboard(keyKeyboard);
+
+                return;
             } else if (primaryCode==operatorBtn) {
                 keyboardView.setKeyboard(operatorsKeyboard);
-            } else if (primaryCode > operatorBtn && primaryCode < dataTypeBtn) {
-                editorText.getText().insert(start, operatorsKeyboard.getKeys().get(primaryCode - operatorBtn - 1).label);
+
+                return;
             } else if (primaryCode==dataTypeBtn) {
                 keyboardView.setKeyboard(dataTypeKeyboard);
+
+                return;
+            }
+
+
+
+            editorText.getText().replace(selectionStart, selectionEnd, "");
+            selectionStart = 0;
+            selectionEnd = 0;
+
+            if (primaryCode > methodBtn && primaryCode < variableBtn) {
+                editorText.getText().insert(start, methodKeyboard.getKeys().get(primaryCode - methodBtn - 1).label);
+            } else if (primaryCode > variableBtn && primaryCode < keyBtn) {
+                editorText.getText().insert(start, variableKeyboard.getKeys().get(primaryCode - variableBtn - 1).label);
+            } else if (primaryCode > operatorBtn && primaryCode < dataTypeBtn) {
+                editorText.getText().insert(start, operatorsKeyboard.getKeys().get(primaryCode - operatorBtn - 1).label);
             } else if (primaryCode > dataTypeBtn && primaryCode < 110000) {
                 editorText.getText().insert(start, dataTypeKeyboard.getKeys().get(primaryCode - dataTypeBtn - 1).label);
+            } else if (primaryCode==delete) {
+                if (editorText.getText() != null && start > 0) {
+                    editorText.getText().delete(start - 1, start);
+                }
             } else {
                 String character = Character.toString((char) primaryCode);
 

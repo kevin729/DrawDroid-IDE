@@ -9,12 +9,12 @@
                 }
             </code>
             <code>
-                public void method() {
+                public void method () {
 
                 }
             </code>
             <code>
-                public static void main(String[] args) {
+                public static void main (String[] args) {
 
                 }
             </code>
@@ -42,7 +42,7 @@
                 var z = z == x ? c : v;
             </code>
             <code>
-                System.out.println("out");
+                System.out.println ("out");
             </code>
         </codes>
 

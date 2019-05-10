@@ -13,7 +13,7 @@
 
 
     <Row>
-        <Key android:codes="65" android:keyIcon="@drawable/tab" android:keyWidth="25%p" android:keyHeight="100dp"/>
+        <Key android:codes="55004" android:keyIcon="@drawable/tab" android:keyWidth="25%p" android:keyHeight="100dp"/>
         <Key android:codes="60000" android:keyLabel="Methods" android:keyWidth="25%p" android:keyHeight="50dp" />
         <Key android:codes="70000" android:keyLabel="Variables" android:keyWidth="25%p" android:keyHeight="50dp" />
         <Key android:codes="80000" android:keyLabel="Letters" android:keyWidth="25%p" android:keyHeight="50dp" />
