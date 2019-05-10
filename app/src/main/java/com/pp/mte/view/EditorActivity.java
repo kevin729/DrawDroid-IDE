@@ -367,6 +367,7 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
         @Override
         public void onKey(int primaryCode, int[] keyCodes) {
             int start = editorText.getSelectionStart();
+            int end = editorText.getSelectionEnd();
 
             if (primaryCode==tab) {
                 do {
@@ -399,7 +400,6 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
                     }
 
                     if (word.matches("\n")) {
-                        System.out.println("next Line");
                         selectionEnd = selectionStart;
                         editorText.setSelection(selectionStart, selectionEnd);
                         break;
@@ -429,13 +429,13 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
             } else if (primaryCode==methodBtn) {
                 keyboardView.setKeyboard(methodKeyboard);
                 sortCode();
-                editorText.setSelection(start);
+                editorText.setSelection(start, end);
 
                 return;
             } else if (primaryCode==variableBtn) {
                 keyboardView.setKeyboard(variableKeyboard);
                 sortCode();
-                editorText.setSelection(start);
+                editorText.setSelection(start, end);
 
                 return;
             } else if (primaryCode==keyBtn) {
