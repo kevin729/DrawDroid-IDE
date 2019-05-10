@@ -20,9 +20,9 @@
 
     <Row>
         <Key android:codes="70009" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
-        <Key android:codes="700010" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
-        <Key android:codes="700011" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
-        <Key android:codes="700013" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70010" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70011" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
+        <Key android:codes="70012" android:keyLabel="" android:keyWidth="25%p" android:keyHeight="50dp" />
     </Row>
 
     <Row>
