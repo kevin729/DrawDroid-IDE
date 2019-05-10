@@ -67,7 +67,7 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        String[] empty = {"", "0"};
+        String[] empty = {"", "0", "0"};
         editTextHistory.add(empty);
 
         presenter = new EditorPresenter(getBaseContext(), this);
@@ -315,7 +315,7 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
 
         newCodeIndex = start;
 
-        String[] code = {editorText.getText().toString(), Integer.toString(editorText.getSelectionStart())};
+        String[] code = {editorText.getText().toString(), Integer.toString(editorText.getSelectionStart()), Integer.toString(newCodeIndex)};
         editTextHistory.add(code);
     }
 
@@ -330,6 +330,8 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
             editTextHistory.remove(editTextHistory.size() - 1);
 
             editorText.setSelection(Integer.parseInt(text[1]));
+
+            newCodeIndex = Integer.parseInt(text[2]);
         }
     }
 
@@ -504,7 +506,7 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
                 }
             }
 
-            String[] code = {editorText.getText().toString(), Integer.toString(editorText.getSelectionStart())};
+            String[] code = {editorText.getText().toString(), Integer.toString(editorText.getSelectionStart()), Integer.toString(newCodeIndex)};
             editTextHistory.add(code);
         }
 
