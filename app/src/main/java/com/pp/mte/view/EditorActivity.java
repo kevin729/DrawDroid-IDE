@@ -454,11 +454,13 @@ public class EditorActivity extends AppCompatActivity implements EditorI.View{
                 return;
             }
 
+            if (selectionStart != selectionEnd) {
+                editorText.getText().replace(selectionStart, selectionEnd, "");
+                newCodeIndex = selectionStart;
+                selectionStart = 0;
+                selectionEnd = 0;
+            }
 
-
-            editorText.getText().replace(selectionStart, selectionEnd, "");
-            selectionStart = 0;
-            selectionEnd = 0;
 
             if (primaryCode > methodBtn && primaryCode < variableBtn) {
                 editorText.getText().insert(start, methodKeyboard.getKeys().get(primaryCode - methodBtn - 1).label);
